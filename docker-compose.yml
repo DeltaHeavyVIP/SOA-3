@@ -1,0 +1,39 @@
+version: "2.1"
+services:
+
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=labs
+    command: postgres -p 5432
+    ports:
+      - "5432:5432"
+
+  consul:
+    image: consul:latest
+    container_name: consul
+    ports:
+      - "8500:8500"
+
+  basic:
+    image: basic
+    container_name: basic
+    depends_on:
+      - db
+      - consul
+    environment:
+      #todo почему consul стартует на localhost?
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - CHECK_PATH=/api/v1/ping
+    ports:
+      - "8080:8080"
+
+  additional:
+    image:  additional
+    container_name: additional
+    ports:
+      - "8081:8081"
