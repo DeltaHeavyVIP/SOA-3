@@ -8,6 +8,7 @@ import com.example.objects.basic.response.AmountResponseDto;
 import com.example.objects.common.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +18,14 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class OtherOperationsService {
 
+    @Autowired
     private ProductRepo productRepo;
 
-    private PersonRepo personRepo;
-
-    private ConversionService conversionService;
-
     @Autowired
-    public OtherOperationsService(ProductRepo productRepo, PersonRepo personRepo, ConversionService conversionService) {
-        this.productRepo = productRepo;
-        this.personRepo = personRepo;
-        this.conversionService = conversionService;
-    }
+    private PersonRepo personRepo;
+    @Autowired
+    @Qualifier("mvcConversionService")
+    private ConversionService conversionService;
 
     public AmountResponseDto countProductsWherePriceHigher(Long price) {
         if (price == null || price < 1) {

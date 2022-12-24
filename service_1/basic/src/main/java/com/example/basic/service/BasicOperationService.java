@@ -12,6 +12,7 @@ import com.example.objects.common.FilterDto;
 import com.example.objects.common.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.*;
@@ -25,24 +26,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BasicOperationService {
 
+    @Autowired
     private PersonRepo personRepo;
 
+    @Autowired
     private LocationRepo locationRepo;
 
+    @Autowired
     private CoordinatesRepo coordinatesRepo;
 
+    @Autowired
     private ProductRepo productRepo;
 
-    private ConversionService conversionService;
-
     @Autowired
-    public BasicOperationService(PersonRepo personRepo, LocationRepo locationRepo, CoordinatesRepo coordinatesRepo, ProductRepo productRepo, ConversionService conversionService) {
-        this.personRepo = personRepo;
-        this.locationRepo = locationRepo;
-        this.coordinatesRepo = coordinatesRepo;
-        this.productRepo = productRepo;
-        this.conversionService = conversionService;
-    }
+    @Qualifier("mvcConversionService")
+    private ConversionService conversionService;
 
     public ProductDto getProductById(Integer id) {
         return conversionService.convert(productRepo.findById(id).orElseThrow(() -> new InvalidInputDataException(String.format("Product with ID %d not found", id))), ProductDto.class);
