@@ -16,8 +16,8 @@ public class ProductController {
     private ProductServiceImpl productServiceImpl;
 
     @GetMapping("/ping")
-    public String isAlive() {
-        return "pong";
+    public ResponseEntity<?> isAlive() {
+        return new ResponseEntity<>("pong", HttpStatus.OK);
     }
 
     @GetMapping("/filter/manufacturer/{manufacturer-id}")

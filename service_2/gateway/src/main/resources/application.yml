@@ -1,6 +1,15 @@
 server:
   port: 9912
 
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+
 spring:
   application:
     name: service-gateway
@@ -16,14 +25,14 @@ spring:
         response-timeout: 5s
       routes:
         - id: additional
-#           имя микросервиса (как зарегестрированно в consul&eureka) куда перенаправляем+ балансировщик
+          #           имя микросервиса (как зарегестрированно в consul&eureka) куда перенаправляем+ балансировщик
           uri: lb://additional
           predicates:
             - Path=**/ebay/**
-#          отброс 1 части URI
-#          filters:
-#            - StripPrefix=1
-#          Порядок обработки маршрута
+          #          отброс 1 части URI
+          #          filters:
+          #            - StripPrefix=1
+          #          Порядок обработки маршрута
           order: 0
         - id: basic
           uri: lb://basic
