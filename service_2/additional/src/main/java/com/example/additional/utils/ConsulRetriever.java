@@ -24,6 +24,6 @@ public class ConsulRetriever {
         Consul client = Consul.builder().withUrl("http://" + CONSUL_HOST + ":" + CONSUL_PORT).build();
         AgentClient agentClient = client.agentClient();
         Map<String, Service> services = agentClient.getServices();
-        return services.values().stream().filter(x -> x.getAddress().contains("service-1")).map(service -> "http://" + service.getAddress() + ":" + service.getPort()).collect(Collectors.toList());
+        return services.values().stream().filter(x -> x.getAddress().contains("basic")).map(service -> "http://" + service.getAddress() + ":" + service.getPort()).collect(Collectors.toList());
     }
 }

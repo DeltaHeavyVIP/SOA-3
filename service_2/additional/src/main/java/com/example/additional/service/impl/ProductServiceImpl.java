@@ -17,7 +17,7 @@ import static com.example.additional.utils.Validator.decreasePercentIsValid;
 import static com.example.additional.utils.Validator.responseIdIsEmpty;
 
 @Service
-@RibbonClient(name = "service_1", configuration = RibbonClientConfig.class)
+@RibbonClient(name = "basic", configuration = RibbonClientConfig.class)
 public class ProductServiceImpl implements ProductService {
 
     private final RestTemplate restTemplate;
@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<ProductDto> getAllProductsManufacture(String manufacturerId) {
-        List<ProductDto> response = List.of(Objects.requireNonNull(restTemplate.getForObject("http://service_1:8080/api/v1/products", ProductDto[].class)));
+        List<ProductDto> response = List.of(Objects.requireNonNull(restTemplate.getForObject("http://basic:8080/api/v1/products", ProductDto[].class)));
         response = response.stream().filter(p -> {
             if (p.getOwner().getPassportID() != null && !p.getOwner().getPassportID().isEmpty()) {
                 return p.getOwner().getPassportID().equals(manufacturerId);
@@ -40,12 +40,12 @@ public class ProductServiceImpl implements ProductService {
 
     public void reducePriceAllProductsByPercentage(Integer decreasePercent) {
         decreasePercentIsValid(decreasePercent);
-        List<ProductDto> allProduct = List.of(Objects.requireNonNull(restTemplate.getForObject("http://localhost:8080/api/v1/products", ProductDto[].class)));
+        List<ProductDto> allProduct = List.of(Objects.requireNonNull(restTemplate.getForObject("http://basic:8080/api/v1/products", ProductDto[].class)));
         for (ProductDto productResponseDto : allProduct) {
             productResponseDto.setPrice((long) Math.ceil((double) productResponseDto.getPrice() * (100 - decreasePercent) / 100));
             Map<String, Integer> urlParams = new HashMap<>();
             urlParams.put("id", productResponseDto.getId());
-            restTemplate.put("http://localhost:8080/api/v1/products/{id}", productResponseDto, urlParams);
+            restTemplate.put("http://basic:8080/api/v1/products/{id}", productResponseDto, urlParams);
         }
     }
 }

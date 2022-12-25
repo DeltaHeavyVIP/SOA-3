@@ -16,6 +16,7 @@
 
     <modules>
         <module>additional</module>
+        <module>gateway</module>
     </modules>
 
 </project>

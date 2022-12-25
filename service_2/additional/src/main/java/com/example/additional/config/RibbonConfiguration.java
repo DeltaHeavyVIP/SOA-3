@@ -14,7 +14,7 @@ import static com.netflix.client.config.DefaultClientConfigImpl.DEFAULT_READ_TIM
 public class RibbonConfiguration {
 
     @RibbonClientName
-    private String name = "service_1";
+    private String name = "basic";
 
     @Bean
     @ConditionalOnMissingBean
