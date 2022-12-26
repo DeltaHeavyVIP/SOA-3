@@ -3,11 +3,11 @@ services:
 
   db:
     image: postgres
-    container_name: postgres
+    container_name: soaDB
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=labs
+      - POSTGRES_DB=soaDB
     command: postgres -p 5432
     ports:
       - "5432:5432"
@@ -25,15 +25,19 @@ services:
       - db
       - consul
     environment:
-      #todo почему consul стартует на localhost?
+      - DATABASE_HOST=soaDB
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=soaDB
       - CONSUL_HOST=consul
       - CONSUL_PORT=8500
       - CHECK_PATH=/api/v1/ping
     ports:
       - "8080:8080"
 
-  additional:
-    image:  additional
-    container_name: additional
-    ports:
-      - "8081:8081"
+#  additional:
+#    image:  additional
+#    container_name: additional
+#    ports:
+#      - "8081:8081"
