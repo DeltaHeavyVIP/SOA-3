@@ -1,6 +1,11 @@
 server:
   port: 9912
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
 logging:
   level:
     reactor:
@@ -14,11 +19,6 @@ spring:
   application:
     name: service-gateway
   cloud:
-    consul:
-      discovery:
-        enabled: true
-      port: 8500
-      host: localhost
     gateway:
       httpclient:
         connect-timeout: 1000
