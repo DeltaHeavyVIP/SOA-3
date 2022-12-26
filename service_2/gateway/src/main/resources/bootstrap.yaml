@@ -1,10 +1,10 @@
 server:
-  port: 9912
+  port: ${APPLICATION_PORT:9912}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
 
 logging:
   level:
@@ -17,7 +17,7 @@ logging:
 
 spring:
   application:
-    name: service-gateway
+    name: ${APPLICATION_NAME:service-gateway}
   cloud:
     gateway:
       httpclient:

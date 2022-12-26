@@ -1,8 +1,8 @@
 spring:
   application:
-    name: basic
+    name: ${APPLICATION_NAME:basic}
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:soaDB}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:labs}
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
@@ -22,10 +22,10 @@ spring:
       port: ${CONSUL_PORT:8500}
       discovery:
         instance-id: ${spring.application.name}:${random.value}
-        healthCheckPath: ${CHECK_PATH:/api/v1/ping}
+        healthCheckPath: /api/v1/ping
         healthCheckInterval: 10s
       config:
         enabled: false
 
 server:
-  port: 8080
+  port: ${APPLICATION_PORT:8080}

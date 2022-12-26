@@ -18,13 +18,26 @@ services:
     ports:
       - "8500:8500"
 
+  gateway:
+    image: gateway
+    container_name: gateway
+    environment:
+      - APPLICATION_NAME=service-gateway
+      - APPLICATION_PORT=9912
+      - EUREKA_SERVER=http://eureka:8761/eureka/
+    ports:
+      - "8761:8761"
+
   basic:
     image: basic
     container_name: basic
     depends_on:
       - db
+      - gateway
       - consul
     environment:
+      - APPLICATION_NAME=basic
+      - APPLICATION_PORT=8080
       - DATABASE_HOST=soaDB
       - DATABASE_PORT=5432
       - DATABASE_USERNAME=postgres
@@ -32,12 +45,30 @@ services:
       - DATABASE_NAME=soaDB
       - CONSUL_HOST=consul
       - CONSUL_PORT=8500
-      - CHECK_PATH=/api/v1/ping
     ports:
       - "8080:8080"
 
-#  additional:
-#    image:  additional
-#    container_name: additional
-#    ports:
-#      - "8081:8081"
+  eureka:
+    image: eureka
+    container_name: eureka
+    environment:
+      - APPLICATION_NAME=eureka-server
+      - APPLICATION_PORT=8761
+    ports:
+      - "8761:8761"
+
+  additional:
+    image:  additional
+    container_name: additional
+    depends_on:
+      - eureka
+      - basic
+    environment:
+      - APPLICATION_NAME=additional
+      - APPLICATION_PORT=8081
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - EUREKA_SERVER=http://eureka:8761/eureka/
+      - RIBBON_NAME=client
+    ports:
+      - "8081:8081"
