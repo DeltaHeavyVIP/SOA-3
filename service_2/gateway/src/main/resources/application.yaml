@@ -19,23 +19,23 @@ spring:
   application:
     name: ${APPLICATION_NAME:service-gateway}
   cloud:
+    consul:
+      discovery:
+        enabled: true
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
     gateway:
       httpclient:
         connect-timeout: 1000
         response-timeout: 5s
       routes:
         - id: additional
-          #           имя микросервиса (как зарегестрированно в consul&eureka) куда перенаправляем+ балансировщик
           uri: lb://additional
           predicates:
-            - Path=**/ebay/**
-          #          отброс 1 части URI
-          #          filters:
-          #            - StripPrefix=1
-          #          Порядок обработки маршрута
+            - Path=/api/v1/ebay/**
           order: 0
         - id: basic
           uri: lb://basic
           predicates:
-            - Path=/**
+            - Path=/api/v1/**
           order: 1

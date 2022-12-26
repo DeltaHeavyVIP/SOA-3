@@ -69,5 +69,7 @@ services:
       - APPLICATION_NAME=service-gateway
       - APPLICATION_PORT=9912
       - EUREKA_SERVER=http://eureka:8761/eureka/
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
     ports:
       - "8761:8761"
