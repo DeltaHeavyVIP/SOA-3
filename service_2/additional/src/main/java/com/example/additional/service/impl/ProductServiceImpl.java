@@ -2,6 +2,7 @@ package com.example.additional.service.impl;
 
 import com.example.additional.config.RibbonClientConfig;
 import com.example.additional.service.ProductService;
+import com.example.additional.utils.ConsulRetriever;
 import com.example.objects.common.ProductDto;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<ProductDto> getAllProductsManufacture(String manufacturerId) {
-        List<ProductDto> response = List.of(Objects.requireNonNull(restTemplate.getForObject("http://basic:8080/api/v1/products", ProductDto[].class)));
+        List<ProductDto> response = List.of(Objects.requireNonNull(this.restTemplate.getForObject("http://basic:8080/api/v1/products", ProductDto[].class)));
         response = response.stream().filter(p -> {
             if (p.getOwner().getPassportID() != null && !p.getOwner().getPassportID().isEmpty()) {
                 return p.getOwner().getPassportID().equals(manufacturerId);
@@ -40,12 +41,12 @@ public class ProductServiceImpl implements ProductService {
 
     public void reducePriceAllProductsByPercentage(Integer decreasePercent) {
         decreasePercentIsValid(decreasePercent);
-        List<ProductDto> allProduct = List.of(Objects.requireNonNull(restTemplate.getForObject("http://basic:8080/api/v1/products", ProductDto[].class)));
+        List<ProductDto> allProduct = List.of(Objects.requireNonNull(this.restTemplate.getForObject("http://basic:8080/api/v1/products", ProductDto[].class)));
         for (ProductDto productResponseDto : allProduct) {
             productResponseDto.setPrice((long) Math.ceil((double) productResponseDto.getPrice() * (100 - decreasePercent) / 100));
             Map<String, Integer> urlParams = new HashMap<>();
             urlParams.put("id", productResponseDto.getId());
-            restTemplate.put("http://basic:8080/api/v1/products/{id}", productResponseDto, urlParams);
+            this.restTemplate.put("http://basic:8080/api/v1/products/{id}", productResponseDto, urlParams);
         }
     }
 }

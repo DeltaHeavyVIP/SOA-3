@@ -24,6 +24,7 @@ spring:
         instance-id: ${spring.application.name}:${random.value}
         healthCheckPath: /api/v1/ping
         healthCheckInterval: 10s
+        tags: basic
       config:
         enabled: false
 
