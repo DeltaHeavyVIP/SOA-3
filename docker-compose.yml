@@ -72,4 +72,4 @@ services:
       - CONSUL_HOST=consul
       - CONSUL_PORT=8500
     ports:
-      - "8761:8761"
+      - "9912:9912"
