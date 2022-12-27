@@ -37,6 +37,44 @@ services:
     ports:
       - "8080:8080"
 
+  basic-1:
+    image: basic
+    container_name: basic-1
+    depends_on:
+      - db
+      - consul
+    environment:
+      - APPLICATION_NAME=basic-1
+      - APPLICATION_PORT=8083
+      - DATABASE_HOST=soaDB
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=soaDB
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+    ports:
+      - "8083:8083"
+
+  basic-2:
+    image: basic
+    container_name: basic-2
+    depends_on:
+      - db
+      - consul
+    environment:
+      - APPLICATION_NAME=basic-2
+      - APPLICATION_PORT=8083
+      - DATABASE_HOST=soaDB
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=soaDB
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+    ports:
+      - "8083:8083"
+
   eureka:
     image: eureka
     container_name: eureka
