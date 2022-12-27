@@ -43,6 +43,7 @@ services:
     environment:
       - APPLICATION_NAME=eureka-server
       - APPLICATION_PORT=8761
+      - CONFIG_URL=http://config:8095
     ports:
       - "8761:8761"
 
@@ -50,6 +51,7 @@ services:
     image:  additional
     container_name: additional
     depends_on:
+      - config
       - eureka
       - basic
     environment:
@@ -59,6 +61,7 @@ services:
       - CONSUL_PORT=8500
       - EUREKA_SERVER=http://eureka:8761/eureka/
       - RIBBON_NAME=client
+      - CONFIG_URL=http://config:8095
     ports:
       - "8081:8081"
 
@@ -73,3 +76,14 @@ services:
       - CONSUL_PORT=8500
     ports:
       - "9912:9912"
+
+  config:
+    image: config
+    container_name: config
+    environment:
+      - APPLICATION_NAME=config-server
+      - APPLICATION_PORT=8095
+      - GIT_URL=https://github.com/DeltaHeavyVIP/spring-config
+      - GIT_BRANCH=master
+    ports:
+      - "8095:8095"

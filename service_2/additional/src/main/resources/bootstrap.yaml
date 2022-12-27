@@ -1,25 +1,9 @@
 spring:
   application:
     name: ${APPLICATION_NAME:additional}
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
+  cloud:
+    config:
+      uri: ${CONFIG_URL:http://localhost:8095}
 
 server:
   port: ${APPLICATION_PORT:8081}
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
-
-basic:
-  ribbon:
-    eureka:
-      enabled: false
-    NIWSServerListClassName: com.example.additional.config.ConsulServerList
-    ServerListRefreshInterval: 1000
-
-ribbon:
-  client:
-    name: ${RIBBON_NAME:client}
