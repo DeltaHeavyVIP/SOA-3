@@ -87,3 +87,9 @@ services:
       - GIT_BRANCH=master
     ports:
       - "8095:8095"
+
+  front:
+    image: front
+    container_name: front
+    ports:
+      - "3000:3000"
