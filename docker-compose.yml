@@ -44,7 +44,7 @@ services:
       - db
       - consul
     environment:
-      - APPLICATION_NAME=basic-1
+      - APPLICATION_NAME=basic
       - APPLICATION_PORT=8083
       - DATABASE_HOST=soaDB
       - DATABASE_PORT=5432
@@ -63,8 +63,8 @@ services:
       - db
       - consul
     environment:
-      - APPLICATION_NAME=basic-2
-      - APPLICATION_PORT=8083
+      - APPLICATION_NAME=basic
+      - APPLICATION_PORT=8087
       - DATABASE_HOST=soaDB
       - DATABASE_PORT=5432
       - DATABASE_USERNAME=postgres
@@ -73,7 +73,7 @@ services:
       - CONSUL_HOST=consul
       - CONSUL_PORT=8500
     ports:
-      - "8083:8083"
+      - "8087:8087"
 
   eureka:
     image: eureka
@@ -86,22 +86,40 @@ services:
       - "8761:8761"
 
   additional:
-    image:  additional
+    image: additional
     container_name: additional
     depends_on:
+      - basic
       - config
       - eureka
-      - basic
     environment:
       - APPLICATION_NAME=additional
       - APPLICATION_PORT=8081
       - CONSUL_HOST=consul
       - CONSUL_PORT=8500
       - EUREKA_SERVER=http://eureka:8761/eureka/
-      - RIBBON_NAME=client
+      - RIBBON_NAME=basic
       - CONFIG_URL=http://config:8095
     ports:
       - "8081:8081"
+
+  additional-1:
+    image: additional
+    container_name: additional-1
+    depends_on:
+      - basic
+      - config
+      - eureka
+    environment:
+      - APPLICATION_NAME=additional
+      - APPLICATION_PORT=8089
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - EUREKA_SERVER=http://eureka:8761/eureka/
+      - RIBBON_NAME=basic
+      - CONFIG_URL=http://config:8095
+    ports:
+      - "8089:8089"
 
   gateway:
     image: gateway
